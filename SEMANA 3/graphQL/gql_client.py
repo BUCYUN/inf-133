@@ -4,7 +4,7 @@ url = 'http://localhost:8000/graphql'
 
 # Definir la consulta GraphQL simple
 query_lista = """
-{
+    {
         estudiantes{
             id
             nombre

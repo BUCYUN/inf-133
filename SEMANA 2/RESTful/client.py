@@ -42,11 +42,19 @@ nuevo_estudiante = {
 post_response = requests.request(method="POST", url=ruta_post, json=nuevo_estudiante)
 print(post_response.text)
 
+# Consume estas rutas desde el Cliente
+ruta_filtrar_nombre = url + "estudiantes/carreras/Economia"
+filtrar_nombre_response = requests.request(method="GET", 
+                                url=ruta_filtrar_nombre)
+print(filtrar_nombre_response.text)
+
+
 # GET busca a un estudiante por id /estudiantes/{id}
 ruta_filtrar_nombre = url + "estudiantes/id/1"
 filtrar_nombre_response = requests.request(method="GET", 
                                 url=ruta_filtrar_nombre)
 print(filtrar_nombre_response.text)
+
 
 # PUT actualiza un estudiante por la ruta /estudiantes
 ruta_actualizar = url + "estudiantes"
