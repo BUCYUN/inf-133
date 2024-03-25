@@ -1,64 +1,65 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 
-# Base de datos simulada de tacos
 tacos = {}
 
 
-# Producto: taco
-class taco:
+class Taco:
     def __init__(self):
-        self.tamaño = None
-        self.masa = None
+        self.base = None
+        self.guiso = None
         self.toppings = []
+        self.salsa = None
 
     def __str__(self):
-        return f"Tamaño: {self.tamaño}, Masa: {self.masa}, Toppings: {', '.join(self.toppings)}"
+        return f"Base: {self.base}, Guiso: {self.guiso}, Toppings: {', '.join(self.toppings)}, Salsa: {self.salsa}"
 
 
-# Builder: Constructor de tacos
-class tacoBuilder:
+class TacoBuilder:
     def __init__(self):
-        self.taco = taco()
+        self.taco = Taco()
 
-    def set_tamaño(self, tamaño):
-        self.taco.tamaño = tamaño
+    def set_base(self, base):
+        self.taco.base = base
 
-    def set_masa(self, masa):
-        self.taco.masa = masa
+    def set_guiso(self, guiso):
+        self.taco.guiso = guiso
 
     def add_topping(self, topping):
         self.taco.toppings.append(topping)
+        
+    def set_salsa(self, salsa):
+        self.taco.salsa = salsa
 
     def get_taco(self):
         return self.taco
 
 
-# Director: Pizzería
-class Pizzeria:
+class Taqueria:
     def __init__(self, builder):
         self.builder = builder
 
-    def create_taco(self, tamaño, masa, toppings):
-        self.builder.set_tamaño(tamaño)
-        self.builder.set_masa(masa)
+    def create_taco(self, base, guiso, toppings, salsa):
+        self.builder.set_base(base)
+        self.builder.set_guiso(guiso)
         for topping in toppings:
             self.builder.add_topping(topping)
+        self.builder.set_salsa(salsa)
         return self.builder.get_taco()
 
 
-# Aplicando el principio de responsabilidad única (S de SOLID)
-class tacoService:
+class TacoService:
     def __init__(self):
-        self.builder = tacoBuilder()
-        self.pizzeria = Pizzeria(self.builder)
+        self.builder = TacoBuilder()
+        self.taqueria = Taqueria(self.builder)
 
     def create_taco(self, post_data):
-        tamaño = post_data.get("tamaño", None)
-        masa = post_data.get("masa", None)
+        base = post_data.get("base", None)
+        guiso = post_data.get("guiso", None)
         toppings = post_data.get("toppings", [])
+        salsa = post_data.get("salsa", None)
 
-        taco = self.pizzeria.create_taco(tamaño, masa, toppings)
+        taco = self.taqueria.create_taco(base, guiso, toppings, salsa)
         tacos[len(tacos) + 1] = taco
         
         return taco
@@ -69,16 +70,19 @@ class tacoService:
     def update_taco(self, index, post_data):
         if index in tacos:
             taco = tacos[index]
-            tamaño = post_data.get("tamaño", None)
-            masa = post_data.get("masa", None)
+            base = post_data.get("base", None)
+            guiso = post_data.get("guiso", None)
             toppings = post_data.get("toppings", [])
+            salsa = post_data.get("salsa", None)
 
-            if tamaño:
-                taco.tamaño = tamaño
-            if masa:
-                taco.masa = masa
+            if base:
+                taco.base = base
+            if guiso:
+                taco.guiso = guiso
             if toppings:
                 taco.toppings = toppings
+            if salsa:
+                taco.salsa = salsa
 
             return taco
         else:
@@ -106,10 +110,9 @@ class HTTPDataHandler:
         return json.loads(post_data.decode("utf-8"))
 
 
-# Manejador de solicitudes HTTP
-class tacoHandler(BaseHTTPRequestHandler):
+class TacosHandler(BaseHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
-        self.controller = tacoService()
+        self.controller = TacoService()
         super().__init__(*args, **kwargs)
 
     def do_POST(self):
@@ -136,7 +139,7 @@ class tacoHandler(BaseHTTPRequestHandler):
                 HTTPDataHandler.handle_response(self, 200, response_data.__dict__)
             else:
                 HTTPDataHandler.handle_response(
-                    self, 404, {"Error": "Índice de taco no válido"}
+                    self, 404, {"Error": "Índice de Taco no válido"}
                 )
         else:
             HTTPDataHandler.handle_response(self, 404, {"Error": "Ruta no existente"})
@@ -147,17 +150,17 @@ class tacoHandler(BaseHTTPRequestHandler):
             deleted_taco = self.controller.delete_taco(index)
             if deleted_taco:
                 HTTPDataHandler.handle_response(
-                    self, 200, {"message": "taco eliminada correctamente"}
+                    self, 200, {"message": "Taco eliminado correctamente"}
                 )
             else:
                 HTTPDataHandler.handle_response(
-                    self, 404, {"Error": "Índice de taco no válido"}
+                    self, 404, {"Error": "Índice de Taco no válido"}
                 )
         else:
             HTTPDataHandler.handle_response(self, 404, {"Error": "Ruta no existente"})
 
 
-def run(server_class=HTTPServer, handler_class=tacoHandler, port=8000):
+def run(server_class=HTTPServer, handler_class=TacosHandler, port=8000):
     server_address = ("", port)
     httpd = server_class(server_address, handler_class)
     print(f"Iniciando servidor HTTP en puerto {port}...")
