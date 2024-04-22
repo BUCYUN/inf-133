@@ -121,9 +121,9 @@ for row in cursor:
     print(row)
 
 # MATRICULACION:
-# ('Juan', 'Perez', 'Ingeniería en Informática', '2024-01-15')
-# ('María', 'Lopez', 'Licenciatura en Administración', '2024-01-20')
-# ('Juan', 'Perez', 'Licenciatura en Administración', '2024-01-25')    
+# ('Tony', 'El Gordo', 'Ingeniería en Informática', '2024-01-15')
+# ('El Barto', 'Larizo', 'Licenciatura en Administración', '2024-01-20')
+# ('Tony', 'El Gordo', 'Licenciatura en Administración', '2024-01-25')    
 
 # Eliminar una fila de la tabla de matriculación
 conn.execute(

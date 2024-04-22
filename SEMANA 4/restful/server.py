@@ -1,6 +1,5 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import json
-
 from urllib.parse import urlparse, parse_qs
 
 estudiantes = [
