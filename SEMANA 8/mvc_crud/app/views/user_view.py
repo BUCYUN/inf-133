@@ -19,3 +19,4 @@ def registro():
 # y renderiza el template `actualizar.html`
 def actualizar(user):
     return render_template("actualizar.html", title="Actualizar usuario", user=user)
+

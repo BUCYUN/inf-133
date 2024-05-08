@@ -10,12 +10,20 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
+    
+    email = db.Column(db.String(50), nullable=False)
+    contraseña = db.Column(db.String(50), nullable=False)
+    fecha_nacimiento = db.Column(db.String(50), nullable=False)
 
     # Inicializa la clase `User`
-    def __init__(self, first_name, last_name):
+    def __init__(self, first_name, last_name, email, contraseña, fecha_nacimiento):
         self.first_name = first_name
         self.last_name = last_name
-
+        
+        self.email = email
+        self.contraseña = contraseña
+        self.fecha_nacimiento = fecha_nacimiento
+        
     # Guarda un usuario en la base de datos
     def save(self):
         db.session.add(self)
@@ -34,3 +42,7 @@ class User(db.Model):
     # Actualiza un usuario en la base de datos
     def update(self):
         db.session.commit()
+        
+    @staticmethod
+    def delete(id):
+        return User.query.delete(id)
