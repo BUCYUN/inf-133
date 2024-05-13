@@ -32,12 +32,12 @@ def list_users():
 # Definimos la ruta "/users" asociada a la función registro
 # que nos devuelve la vista de registro
 @user_bp.route("/users/create", methods=["GET", "POST"])
-@login_required
 def create_user():
     if request.method == "POST":
         # Obtenemos los datos del formulario
         first_name = request.form["first_name"]
         last_name = request.form["last_name"]
+        role = request.form["role"]
         username = request.form["username"]
         password = request.form["password"]
         existing_user = User.query.filter_by(username=username).first()
@@ -45,7 +45,7 @@ def create_user():
             flash("El nombre de usuario ya está en uso", "error")
             return redirect(url_for("user.create_user"))
         # Creamos un nuevo usuario
-        user = User(first_name, last_name, username, password)
+        user = User(first_name, last_name, role, username, password)
         user.set_password(password)
         # Guardamos el usuario
         user.save()
@@ -69,7 +69,9 @@ def update_user(id):
         # Obtenemos los datos del formulario
         first_name = request.form["first_name"]
         last_name = request.form["last_name"]
+        role = request.form["role"]
         # Actualizamos los datos del usuario
+        user.role = role
         user.first_name = first_name
         user.last_name = last_name
         # Guardamos los cambios

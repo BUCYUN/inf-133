@@ -18,6 +18,13 @@
             required class="input" value="{{ user.last_name }}">
         </div>
     </div>
+    <div class="field">
+        <label for="role">Role:</label>
+        <div class="control">
+            <input type="text" id="role" name="role" 
+            required class="input" value="{{ user.role }}">
+        </div>
+    </div>
     <input type="submit" value="Actualizar" class="button is-primary">
 
 {% endblock %}

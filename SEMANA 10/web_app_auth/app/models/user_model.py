@@ -12,13 +12,15 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
+    role = db.Column(db.String(50), nullable=False)
     username = db.Column(db.String(100), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
 
     # Inicializa la clase `User`
-    def __init__(self, first_name, last_name, username, password):
+    def __init__(self, first_name, last_name, role, username, password):
         self.first_name = first_name
         self.last_name = last_name
+        self.role = role
         self.username = username
         self.set_password(password)
 
