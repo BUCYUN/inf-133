@@ -27,6 +27,7 @@ def index():
 
 @user_bp.route("/users")
 @login_required
+@role_required("admin")
 def list_users():
     # Obtenemos todos los usuarios
     users = User.get_all()
