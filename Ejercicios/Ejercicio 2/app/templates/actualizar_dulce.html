@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="subtitle is-2">Actualizar Dulce</h2>
+
+<form method="post" action="/dulces/{{ dulce.id }}/update">
+    <div class="field">
+        <label for="marca">Marca:</label>
+        <div class="control">
+            <input type="text" id="marca" name="marca" 
+            required class="input" value="{{ dulce.marca }}">
+        </div>
+    </div>
+    <div class="field">
+        <label for="peso">Peso:</label>
+        <div class="control">
+            <input type="text" id="peso" name="peso" 
+            required class="input" value="{{ dulce.peso }}">
+        </div>
+    </div>
+    <div class="field">
+        <label for="sabor">Sabor:</label>
+        <div class="control">
+            <input type="text" id="sabor" name="sabor" 
+            required class="input" value="{{ dulce.sabor }}">
+        </div>
+    </div>
+    
+    <div class="field">
+        <label for="origen">Origen:</label>
+        <div class="control">
+            <div>
+                <input type="text" id="origen" name="origen" 
+                required class="input" value="{{ dulce.origen }}">
+        </div>
+    </div>
+    <input type="submit" value="Actualizar_dulce" class="button is-primary">
+
+{% endblock %}
