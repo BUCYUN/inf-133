@@ -19,4 +19,5 @@ def render_product_detail(product):
         "name": product.name,
         "description": product.description,
         "price": product.price,
+        "stock": product.stock
     }

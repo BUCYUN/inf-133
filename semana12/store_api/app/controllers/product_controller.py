@@ -16,7 +16,6 @@ def get_products():
     products = Product.get_all()
     return jsonify(render_product_list(products))
 
-
 # Ruta para obtener un producto específico por su ID
 @product_bp.route("/products/<int:id>", methods=["GET"])
 @jwt_required
@@ -27,28 +26,26 @@ def get_producto(id):
         return jsonify(render_product_detail(product))
     return jsonify({"error": "Producto no encontrado"}), 404
 
-
 # Ruta para crear un nuevo producto
 @product_bp.route("/products", methods=["POST"])
 @jwt_required
 @roles_required(roles=["admin"])
-def create_prduct():
+def create_product():
     data = request.json
     name = data.get("name")
     description = data.get("description")
     price = data.get("price")
     stock = data.get("stock")
 
-    # Validación simple de datos de entrada
-    if not name or not description or price or stock is None:
+    # Validación correcta de datos de entrada
+    if not name or not description or price is None or stock is None:
         return jsonify({"error": "Faltan datos requeridos"}), 400
 
     # Crear un nuevo producto y guardarlo en la base de datos
-    product = Product(name=name, description=description, price=price)
+    product = Product(name=name, description=description, price=price, stock=stock)
     product.save()
 
     return jsonify(render_product_detail(product)), 201
-
 
 # Ruta para actualizar un producto existente
 @product_bp.route("/products/<int:id>", methods=["PUT"])
